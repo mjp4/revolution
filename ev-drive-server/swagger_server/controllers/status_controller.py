@@ -17,4 +17,4 @@ def get_charge_perc(username, password):  # noqa: E501
 
     :rtype: ChargePerc
     """
-    return 'do some magic!'
+    return {"percentage": "20"}
