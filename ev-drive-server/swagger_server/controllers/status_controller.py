@@ -2,17 +2,17 @@ import connexion
 import six
 
 import requests
-from requests import Request, Session, RequestException
 import json
-import logging
-from datetime import date
 import base64
-from Crypto.Cipher import Blowfish
-import binascii
+import logging
 import time
-from ConfigParser import SafeConfigParser
+import binascii
 import sys
 import pprint
+import blowfish
+
+from requests import Request, Session, RequestException
+from datetime import date
 
 import logging
 from datetime import date, timedelta, datetime
@@ -26,7 +26,7 @@ BASE_URL = "https://gdcportalgw.its-mo.com/gworchest_160803A/gdc/"
 
 log = logging.getLogger(__name__)
 
-def get_charge_perc(username, password):  # noqa: E501
+def get_charge_perc(username = "mark@perryman.org.uk", password="password"):  # noqa: E501
     """Get the charge percentage
 
      # noqa: E501
@@ -39,27 +39,25 @@ def get_charge_perc(username, password):  # noqa: E501
     :rtype: ChargePerc
     """
 
-    print "Executing run.py"
+    username = "mark@perryman.org.uk"
 
-    print "Prepare Session"
-    s = main.Session(username, password , "NE")
+    print(username)
+    print(password)
+    print ("Executing run.py")
 
-    print "Login..."
+    print ("Prepare Session")
+    s = Session(username, password , "NE")
+
+    print ("Login...")
     l = s.get_leaf()
 
-    leaf_info = l.get_latest_battery_status()
-    print "leaf_info.state_of_charge %s" % leaf_info.state_of_charge
 
     logging.debug("login = %s , password = %s" % ( username , password)  )
 
-    print "Prepare Session"
-    s = pycarwings2.Session(username, password , "NE")
-    print "Login..."
-    l = s.get_leaf()
 
     leaf_info = l.get_latest_battery_status()
 
-    return {"percentage": str(leaf_info.state_of_charge)}
+    return leaf_info.state_of_charge
 
 
 def get_location(l):
@@ -67,7 +65,7 @@ def get_location(l):
     while True:
         location_status = l.get_status_from_location(result_key)
         if location_status is None:
-            print "Waiting for response (sleep 10)"
+            # print "Waiting for response (sleep 10)"
             time.sleep(10)
         else:
             lat = location_status.latitude
@@ -111,7 +109,7 @@ class Session(object):
         req = Request('POST', url=BASE_URL + endpoint, data=params).prepare()
 
         log.debug("invoking carwings API: %s" % req.url)
-        log.debug("params: %s" % json.dumps(params, sort_keys=True, indent=3, separators=(',', ': ')))
+        # log.debug("params: %s" % json.dumps(params, sort_keys=True, indent=3, separators=(',', ': ')))
 
         try:
             sess = requests.Session()
@@ -123,7 +121,8 @@ class Session(object):
         except RequestException:
             log.warning('HTTP Request failed')
 
-        j = json.loads(response.content)
+        j = json.loads(response.content.decode('utf-8'))
+        print(j)
 
         if "message" in j and j["message"] == "INVALID PARAMS":
             log.error("carwings error %s: %s" % (j["message"], j["status"]) )
@@ -144,9 +143,10 @@ class Session(object):
         })
         ret = CarwingsInitialAppResponse(response)
 
-        c1  = Blowfish.new(ret.baseprm, Blowfish.MODE_ECB)
-        packedPassword = _PKCS5Padding(self.password)
-        encryptedPassword = c1.encrypt(packedPassword)
+        # c1  = blowfish.new(ret.baseprm, blowfish.MODE_ECB)
+        c2 = blowfish.Cipher(b"uyI5Dj9g8VCOFDnBRUbr3g")
+        # packedPassword = _PKCS5Padding(self.password)
+        encryptedPassword = c2.encrypt_block(bytes(self.password, 'UTF-8'))
         encodedPassword = base64.standard_b64encode(encryptedPassword)
 
         response = self._request("UserLoginRequest.php", {
