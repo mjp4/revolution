@@ -1,0 +1,180 @@
+swagger: '2.0'
+info:
+  version: 0.0.1
+  title: revolution
+  license:
+    name: Proprietary
+    url: 'https://www.metaswitch.com'
+  contact:
+    url: 'https://www.metaswitch.com/'
+    email: 'api-support@metaswitch.com'
+tags:
+  - name: revolution
+    description: revolution
+schemes:
+  - http
+basePath: /revolution/api
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  '/charge_perc/nissan/{username}/{password}':
+    parameters:
+      - $ref: '#/parameters/username'
+      - $ref: '#/parameters/password'
+    get:
+      summary: Get the charge percentage
+      operationId: get_charge_perc
+      tags:
+        - status
+      responses:
+        '200':
+          description: Success. The battery status has been found.
+          schema:
+            $ref: '#/definitions/chargePerc'
+        '400':
+          description: Missing field.  Invalid configuration record.
+        '404':
+          description: User not found
+  '/dist_to_charger/{lat_here}/{long_here}/{lat_there}/{long_there}':
+    parameters:
+      - $ref: '#/parameters/latHere'
+      - $ref: '#/parameters/longHere'
+      - $ref: '#/parameters/latThere'
+      - $ref: '#/parameters/longThere'
+    get:
+      summary: Get the distance to charger
+      operationId: get_dist_to_charger
+      tags:
+        - dist
+      responses:
+        '200':
+          description: Success. Distance found.
+          schema:
+            $ref: '#/definitions/distToCharger'
+        '400':
+          description: Bad request.
+  '/chargers_on_route/{from}/{to}':
+    parameters:
+      - $ref: '#/parameters/from'
+      - $ref: '#/parameters/to'
+    get:
+      summary: Get a list of the chargers on route
+      operationId: chargers_on_route
+      tags:
+        - chargers_on_route
+      responses:
+        '200':
+          description: Success. Chargers found.
+          schema:
+            $ref: '#/definitions/onRoute'
+        '400':
+          description: Bad request.
+        '404':
+          description: No chargers found!
+
+
+
+parameters:
+  username:
+    name: username
+    in: path
+    description: |
+      Username for logging in
+    required: true
+    type: string
+  password:
+    name: password
+    in: path
+    description: Users password
+    required: true
+    type: string
+  latHere:
+    name: lat_here
+    in: path
+    description: The latitude or longitude
+    required: true
+    type: string
+  longHere:
+    name: long_here
+    in: path
+    description: The latitude or longitude
+    required: true
+    type: string
+  latThere:
+    name: lat_there
+    in: path
+    description: The latitude or longitude
+    required: true
+    type: string
+  longThere:
+    name: long_there
+    in: path
+    description: The latitude or longitude
+    required: true
+    type: string
+  from:
+    name: from
+    in: path
+    description: Start or end point
+    required: true
+    type: string
+  to:
+    name: to
+    in: path
+    description: Start or end point
+    required: true
+    type: string
+
+definitions:
+  chargePerc:
+    type: object
+    required:
+      - percentage
+    properties:
+      percentage:
+        type: string
+        description: The percentage of battery.
+  distToCharger:
+    type: object
+    required:
+      - dist_miles
+      - dist_km
+    properties:
+      dist_miles:
+        type: string
+        description: The distance in miles
+      dist_km:
+        type: string
+        description: The distance in km
+  onRoute:
+    type: array
+    items:
+      $ref: '#/definitions/charger'
+  charger:
+    type: object
+    properties:
+      lat:
+        type: string
+        description: latitude
+      long:
+        type: string
+        description: longitude
+      network:
+        type: string
+        description: Network station is on.
+      dist_miles:
+        type: string
+        description: The distance in miles
+      dist_km:
+        type: string
+        description: The distance in km
+      extra_time:
+        type: string
+        description: Extra time needed
+      other:
+        type: string
+        description: Other possible details.
+
+
