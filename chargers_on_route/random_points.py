@@ -2,11 +2,11 @@ import random as random
 import math as math
 
 class Point():
-   def __init__(self, longitude, latitude):
+   def __init__(self, latitude, longitude):
        self.latitude = latitude
        self.longitude = longitude
    def __str__(self):
-   	   return "({0}, {1})".format(self.longitude, self.latitude)
+   	   return "({0}, {1})".format(self.latitude, self.longitude)
 
 
 def generate_random_points(lowerLatitude, upperLatitude, lowerLongitude, upperLongitude, numberOfPoints):
@@ -20,7 +20,6 @@ def generate_random_points(lowerLatitude, upperLatitude, lowerLongitude, upperLo
        latitude = lowerLatitude + (upperLatitude - lowerLatitude) * random.random()
        longitude = lowerLongitude + (upperLongitude - lowerLongitude) * random.random()
        point = Point(latitude, longitude)
-       # print(point.latitude, point.longitude)
        listOfPoints.append(point)
        i = i + 1
 
