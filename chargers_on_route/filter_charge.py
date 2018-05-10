@@ -1,6 +1,7 @@
 import random_points
 import matplotlib.pyplot as plt
 from matplotlib import interactive
+import maps_integration
 
 
 def filter_charger(input_route, charger_list):
@@ -48,7 +49,7 @@ def test():
 	start_point = random_points.Point(32, 32)
 	end_point = random_points.Point(35, 35)
 	charger = random_points.generate_random_points(30, 40, 30, 40, 10000)
-	route = random_points.generate_random_trajectory(start_point, end_point, 10000)
+	route = maps_integration.getRoute([51.652169, -0.084417], [55.950398, -3.180827])
 	charger_list_final = filter_charger(route, charger)
 
 	route_long = []
