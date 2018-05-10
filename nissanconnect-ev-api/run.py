@@ -3,20 +3,19 @@ import sys
 import main
 
 logging.basicConfig(stream=sys.stdout, level=logging.ERROR)
-
-
-
-print ("hello")
 username = "mark@perryman.org.uk"
 password = "password"
 
-logging.debug("login = %s , password = %s" % ( username , password)  )
+if __name__ == "__main__":
+    print "Executing run.py"
 
-print "Prepare Session"
-s = main.Session(username, password , "NE")
-print "Login..."
-l = s.get_leaf()
+    print "Prepare Session"
+    s = main.Session(username, password , "NE")
 
-leaf_info = l.get_latest_battery_status()
+    print "Login..."
+    l = s.get_leaf()
 
-print "leaf_info.state_of_charge %s" % leaf_info.state_of_charge
+    leaf_info = l.get_latest_battery_status()
+    print "leaf_info.state_of_charge %s" % leaf_info.state_of_charge
+
+    longitude, lattitude = main.get_location(l)
