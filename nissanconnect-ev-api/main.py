@@ -32,7 +32,7 @@ class Session(object):
         self.logged_in = False
         self.custom_sessionid = None
 
-        def _request(self, endpoint, params):
+    def _request(self, endpoint, params):
         params["initial_app_strings"] = "geORNtsZe5I4lRGjG9GZiA"
         if self.custom_sessionid:
             params["custom_sessionid"] = self.custom_sessionid
