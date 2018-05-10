@@ -19,6 +19,4 @@ l = s.get_leaf()
 
 leaf_info = l.get_latest_battery_status()
 
-
-
 print "leaf_info.state_of_charge %s" % leaf_info.state_of_charge
