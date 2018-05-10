@@ -46,6 +46,10 @@ def filter_charger(input_route, charger_list):
 
 
 def plot_maps():
+	"""
+	Define the start_point and the end_point, randomly generate charging points.
+	Plot the raw map and filter map.
+	"""
 	start_point = random_points.Point(51.652169, -0.084417)
 	end_point = random_points.Point(55.950398, -3.180827)
 	charger = random_points.generate_random_points(-4, 0, 50, 57, 10000)
