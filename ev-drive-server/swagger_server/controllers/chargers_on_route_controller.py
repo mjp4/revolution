@@ -17,4 +17,23 @@ def chargers_on_route(_from, to):  # noqa: E501
 
     :rtype: OnRoute
     """
-    return 'do some magic!'
+    return [
+  {
+    "lat": "52.618731",
+    "long": "-1.205812",
+    "network": "Ecotricity (Electric Highway)",
+    "dist_miles": "50",
+    "dist_km": "80",
+    "extra_time": "5",
+    "other": "extra_string"
+  }
+  {
+    "lat": "53.713912",
+    "long": "-1.743583",
+    "network": "Ecotricity (Electric Highway)",
+    "dist_miles": "25",
+    "dist_km": "40",
+    "extra_time": "5",
+    "other": "extra_string"
+  }
+]
