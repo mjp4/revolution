@@ -1,4 +1,6 @@
 Hackathon 12 - Accelerate the Electric Car Revolution
 =====================================================
 
-TODO
+Main backend server code is in `ev-drive-server2`.
+
+Controllers in `ev-drive-server2/swagger-server/controllers/`.
