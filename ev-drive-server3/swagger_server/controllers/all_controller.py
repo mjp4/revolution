@@ -23,9 +23,9 @@ def all_info(username, password, to):  # noqa: E501
     :type to: str
     :rtype: AllInfo
     """
-    # car_status = status_controller.get_charge_perc(username, password)
-
     username = "mark@perryman.org.uk"
+
+    # car_status = status_controller.get_charge_perc(username, password)
 
     car_status = { "watthour": "18160",
                    "location_lat": "52.375666666667",
