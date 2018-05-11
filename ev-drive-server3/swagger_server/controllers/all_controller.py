@@ -25,13 +25,11 @@ def all_info(username, password, to):  # noqa: E501
                    "location_long": "-1.7978888888889"
                    }
 
-    start_lat = car_status['location_lat']
-    start_long = car_status['location_long']
+    start_point = dict(lat=car_status['location_lat'], long=car_status['location_long'])
+    end_point = filter_charger.get_coordinates(to)
 
-    all_chargers = filter_charger.get_chargers_lat_long(start_lat, start_long, to)
-
-
-
+    charger_raw_list = filter_charger.get_charger_list()
+    all_chargers = filter_charger.filter_chargers_on_route_lat_long(start_point, end_point, charger_raw_list)
 
     return {"chargers": all_chargers,
             "car": car_status}

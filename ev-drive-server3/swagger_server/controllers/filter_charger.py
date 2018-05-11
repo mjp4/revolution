@@ -94,9 +94,10 @@ def filter_charger(input_route, charger_list):
     # The route forms a block within the long and lat range, filter out the charger outside of it.
     charger_in_range = []
     for charger in charger_list:
-        if float(charger["long"]) <= long_max and float(charger["long"]) >= long_min:
-            if float(charger["lat"]) <= lat_max and float(charger["lat"]) >= lat_min:
-                charger_in_range.append(charger)
+        if charger["network"] == "Ecotricity (Electric Highway)"
+            if float(charger["long"]) <= long_max and float(charger["long"]) >= long_min:
+                if float(charger["lat"]) <= lat_max and float(charger["lat"]) >= lat_min:
+                    charger_in_range.append(charger)
 
     # Do calculations to filter more.
     # Keep chargers within 2 miles distance from the route, which is 0.03 degree either long or lat.
@@ -151,16 +152,14 @@ def filter_charger(input_route, charger_list):
 #     interactive(False)
 #     plt.show()
 
-def get_chargers_lat_long(start_lat, start_long, end_postcode, plot=False):
+def filter_chargers_on_route_lat_long(start_point, end_point, chargers):
     """
     Get chargers with start location as lat long, end as postcode
     """
-    start_point = {"lat": start_lat, "long": start_long}
-    end_point = get_coordinates(end_postcode)
     route = get_route(start_point, end_point)
 
     charger_raw_list = get_charger_list()
-    charger_filtered_list = filter_charger(route, charger_raw_list)
+    charger_filtered_list = filter_charger(route, chargers)
 
     return charger_filtered_list
 
@@ -176,11 +175,11 @@ def get_chargers_on_route(start_postcode, end_postcode, plot=False):
     charger_raw_list = get_charger_list()
     charger_filtered_list = filter_charger(route, charger_raw_list)
 
-    if plot:
-        plot_maps(route, charger_raw_list, charger_filtered_list)
+    # if plot:
+    #     plot_maps(route, charger_raw_list, charger_filtered_list)
 
     return charger_filtered_list
 
 
 if __name__ == "__main__":
-    get_chargers_on_route("SW7 2AZ", "EH2 2PF", plot=True)
+    get_chargers_on_route("SW7 2AZ", "EH2 2PF")
