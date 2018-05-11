@@ -1,6 +1,9 @@
 import connexion
 import six
 from math import cos, asin, sqrt
+import requests
+import json
+import wget
 
 from swagger_server.models.dist_to_charger import DistToCharger  # noqa: E501
 from swagger_server import util
@@ -23,20 +26,29 @@ def get_dist_to_charger(lat_here, long_here, lat_there, long_there):  # noqa: E5
     :rtype: DistToCharger
     """
 
+    api_key = "AIzaSyCsYddGN_7QHkR-JnCS4PA-giJV79ZqW7c"
 
-    lat_here = float(lat_here)
-    long_here = float(long_here)
-    lat_there = float(lat_there)
-    long_there = float(long_there)
+    url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins={},{}&destinations={},{}&key={}" \
+        .format(lat_here, long_here, lat_there, long_there, api_key)
 
-    p = 0.017453292519943295     #Pi/180
-    a = 0.5 - cos((lat_there - lat_here) * p) \
-        / 2 + cos(lat_here * p) \
-        * cos(lat_there * p) \
-        * (1 - cos((long_there - long_here) * p)) / 2
-    return 12742 * asin(sqrt(a))
+    fs = wget.download(url=url, out='dist.json')
+    with open(fs, 'r') as f:
+        content = f.read()
 
+    data = json.loads(content)
 
+    miles = data['rows'][0]['elements'][0]['distance']['text']
 
-    # return 'do some magic!'
+    return miles[:-3]
 
+    # lat_here = float(lat_here)
+    # long_here = float(long_here)
+    # lat_there = float(lat_there)
+    # long_there = float(long_there)
+
+    # p = 0.017453292519943295     #Pi/180
+    # a = 0.5 - cos((lat_there - lat_here) * p) \
+    #     / 2 + cos(lat_here * p) \
+    #     * cos(lat_there * p) \
+    #     * (1 - cos((long_there - long_here) * p)) / 2
+    # return 12742 * asin(sqrt(a))
