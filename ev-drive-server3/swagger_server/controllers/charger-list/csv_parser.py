@@ -65,6 +65,7 @@ def main(args):
                             lat=row[3],
                             long=row[4],
                             network=row[26],
+                            name=row[2],
                             other=','.join(string1)
                             ))
                     firstrow = False

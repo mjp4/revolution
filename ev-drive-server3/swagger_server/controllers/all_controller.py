@@ -27,7 +27,7 @@ def all_info(username, password, to):  # noqa: E501
 
     username = "mark@perryman.org.uk"
 
-    car_status = { "WattHour": "18160",
+    car_status = { "watthour": "18160",
                    "location_lat": "52.375666666667",
                    "location_long": "-1.7978888888889"
                    }
@@ -39,9 +39,9 @@ def all_info(username, password, to):  # noqa: E501
 
     route_chargers = filter_charger.filter_chargers_on_route_lat_long(start_point, end_point, charger_raw_list)
 
-    chargers_with_dist = chargers_with_distance(start_point, route_chargers)
+    chargers_with_dist = chargers_with_distance(start_point, end_point, route_chargers, car_status["watthour"])
 
-    sorted_chargers = sorted(chargers_with_dist, key=itemgetter('dist_miles'))
+    sorted_chargers = sorted(chargers_with_dist, key=lambda elem: float(elem['dist_miles']))
 
     # Remove duplicates
     parsed_chargers = []
@@ -53,17 +53,27 @@ def all_info(username, password, to):  # noqa: E501
         else:
             parsed_chargers.append(i)
 
-    limited_chargers = parsed_chargers[:3]
+    limited_chargers = parsed_chargers[:20]
 
     return {"chargers": limited_chargers,
             "car": car_status}
 
-def chargers_with_distance(start_point, chargers):
+def chargers_with_distance(start_point, end_point, chargers, watthour = None):
     for charger in chargers:
-        ast.literal_eval(str(charger))
         charge_lat = charger["lat"]
         charge_long = charger["long"]
-        charger['dist_miles'] = float((dist_controller.get_dist_to_charger(start_point['lat'], start_point['long'], charge_lat, charge_long)))
-        charger['dist_km'] = charger['dist_miles'] * 1.6
+        dist_miles = float((dist_controller.get_dist_to_charger(start_point['lat'], start_point['long'], charge_lat, charge_long)))
+        charger['dist_miles'] = "{:.1f}".format(dist_miles)
+        charger['dist_km'] = "{:.1f}".format(dist_miles * 1.6)
+        charger['extra_time'] = "{:.0f}".format(dist_controller.extra_time_to_charger(
+                start_point['lat'],
+                start_point['long'],
+                charger["lat"],
+                charger["long"],
+                end_point["lat"],
+                end_point["long"]) / 60.)
+        if watthour is not None:
+            charger['economy'] = "{:.1f}".format(1000 * dist_miles / int(watthour))
+
     return chargers
 

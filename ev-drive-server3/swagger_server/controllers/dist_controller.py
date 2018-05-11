@@ -8,6 +8,7 @@ import wget
 from swagger_server.models.dist_to_charger import DistToCharger  # noqa: E501
 from swagger_server import util
 
+api_key = "AIzaSyDP0Rn3x3AP1nbSGZgdQ2HCyQXnme1UtJ8"
 
 def get_dist_to_charger(lat_here, long_here, lat_there, long_there):  # noqa: E501
     """Get the distance to charger
@@ -25,8 +26,6 @@ def get_dist_to_charger(lat_here, long_here, lat_there, long_there):  # noqa: E5
 
     :rtype: DistToCharger
     """
-
-    api_key = "AIzaSyCsYddGN_7QHkR-JnCS4PA-giJV79ZqW7c"
 
     url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins={},{}&destinations={},{}&key={}" \
         .format(lat_here, long_here, lat_there, long_there, api_key)
@@ -60,9 +59,6 @@ def duration_to_time(duration_str):
     return time
 
 def extra_time_to_charger(lat_here, long_here, lat_charger, long_chager, lat_dest, lon_dest):
-
-    api_key = "AIzaSyCsYddGN_7QHkR-JnCS4PA-giJV79ZqW7c"
-
 
     url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins={},{}|{},{}&destinations={},{}|{},{}&key={}" \
         .format(lat_here, long_here, lat_charger, long_chager, lat_charger, long_chager, lat_dest, lon_dest, api_key)
