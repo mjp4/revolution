@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import csv
+import json
 
 # name,latitude,longitude,town,postcode,deviceControllerName,chargeDeviceStatus,
 # lastUpdated,paymentRequired,paymentRequiredDetails,subscriptionRequired,
@@ -16,22 +17,34 @@ USEFUL_DATA = [3, 4, 5, 13, 15, 27, 32, 38, 42, 43, 44, 45, 72, 73, 79, 83, 84,
 
 
 def main():
-    with open("/home/ubuntu/hackathon/rEVolution/charger-list/ncpr_list.csv", newline='') as csvfile:
+    with open("ncpr_list.csv", newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
         firstrow = True
         listofdata = []
+        listofdicts = []
         for row in spamreader:
                 string1 = []
                 if firstrow is True or test_50kw(row) is True:
-                    firstrow = False
                     for num in USEFUL_DATA:
                         string1.append(row[num-1])
                     listofdata.append(string1)
+
+                    if not firstrow:
+                        listofdicts.append(dict(
+                            lat=row[3],
+                            long=row[4],
+                            network=row[26],
+                            other=','.join(string1)
+                            ))
+                    firstrow = False
+
         print("\n\n")
-        with open("/home/ubuntu/hackathon/rEVolution/charger-list/50over.csv", 'w', newline='') as csvfile:
+        with open("50over.csv", 'w', newline='') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for item in listofdata:
                 spamwriter.writerow(item)
+        with open("50over.json", "w") as jsonfile:
+            json.dump(listofdicts, jsonfile)
 
 
 def test_50kw(list1):
