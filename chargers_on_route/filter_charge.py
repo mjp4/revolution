@@ -97,4 +97,6 @@ def plot_maps():
 	plt.show()
 
 
-plot_maps()
+
+if __name__ == "__main__":
+	plot_maps()
