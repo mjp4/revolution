@@ -4,6 +4,7 @@ import logging
 from swagger_server.models.all_info import AllInfo  # noqa: E501
 from swagger_server import util
 import status_controller
+import dist_controller
 
 
 logging.debug("login = %s , password = %s" % ( username , password)  )
@@ -28,26 +29,22 @@ def all_info(username, password, to):  # noqa: E501
     # Log in
     l = login(username, password)
 
-    # Get charge info from car
-    leaf_info = l.get_latest_battery_status()
-    perc_charge = leaf_info.state_of_charge
-
-
-
-    # Get current location from car
-    lon_from, lat_from = get_location(l)
-    lon_lat_from = lon_from + " " + lat_from)
-
-    # Filter chargers on route (Nian)
-
-    # Calculate distances to charger, and from charger to end point. Order by nearest
-
-
     # return the car status, and the list of charge points
+    a
 
-
-
+    get chargers()
 
 
 
     return 'do some magic!'
+
+
+def get_chargers(car_lat, car_lon ):
+    # Filter chargers on route. (Nian)
+    chargers = []
+
+    # Calculate distances to charger. Order by nearest
+    for charger in chargers:
+        charg_lat = charger.get("lat")
+        charg_lon = charger.get("lon")
+        get_dist_to_charger(lat_here, long_here, lat_there, long_there):
