@@ -19,6 +19,21 @@ consumes:
 produces:
   - application/json
 paths:
+  '/all_info/{username}/{password}/{to}':
+    parameters:
+      - $ref: '#/parameters/username'
+      - $ref: '#/parameters/password'
+      - $ref: '#/parameters/to'
+    get:
+      summary: Get all the info
+      operationId: all_info
+      tags:
+        - all
+      responses:
+        '200':
+          description: Success. We have found the info.
+          schema:
+            $ref: '#/definitions/allInfo'
   '/charge_perc/nissan/{username}/{password}':
     parameters:
       - $ref: '#/parameters/username'
@@ -176,5 +191,20 @@ definitions:
       other:
         type: string
         description: Other possible details.
-
-
+  allInfo:
+    type: object
+    properties:
+      car:
+        type: object
+        properties:
+          lat:
+            type: string
+          long:
+            type: string
+          charge:
+            type: string
+            description: The charge in watt hour
+      chargers:
+        type: array
+        items:
+          $ref: '#/definitions/charger'
