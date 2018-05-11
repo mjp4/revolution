@@ -1,6 +1,7 @@
 import connexion
 import six
 from swagger_server.controllers import status_controller
+import json
 
 from swagger_server.models.all_info import AllInfo  # noqa: E501
 from swagger_server import util
@@ -17,6 +18,10 @@ def all_info(username, password, to):  # noqa: E501
     :type to: str
     :rtype: AllInfo
     """
+    car_status = status_controller.get_charge_perc(username, password)
 
-    a = status_controller.get_charge_perc(username, password)
-    return a
+    with open("swagger_server/controllers/charger-list/50over.json", "r") as charger_file:
+        all_chargers = json.load(charger_file)
+
+    return {"chargers": all_chargers,
+            "car": car_status}
