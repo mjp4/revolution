@@ -49,7 +49,6 @@ def get_charge_perc(username, password):  # noqa: E501
         }
     ]
 
-
 def login(username, password):
     s = Session(username, password , "NE")
     # print("Login...")
