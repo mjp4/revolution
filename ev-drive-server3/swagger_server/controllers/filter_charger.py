@@ -125,11 +125,11 @@ def plot_maps(route, charger_raw_list, charger_filtered_list):
 
     # Build the figure with route and original charger.
     plt.figure(1)
-    plt.xlabel("lat")
-    plt.ylabel("long")
+    plt.xlabel("longitude")
+    plt.ylabel("latitude")
     plt.title("The Map")
-    plt.scatter(charger_raw_lat, charger_raw_long, label="Charger", color="red", marker="*", s=5)
-    plt.plot(route_lat, route_long, label="Car Route", color="blue")
+    plt.scatter(charger_raw_long, charger_raw_lat, label="Charger", color="red", marker="*", s=5)
+    plt.plot(route_long, route_lat, label="Car Route", color="blue")
     plt.legend()
     interactive(True)
     plt.show()
@@ -142,11 +142,11 @@ def plot_maps(route, charger_raw_list, charger_filtered_list):
 
     # Build the figure with route and filtered charger.
     plt.figure(2)
-    plt.xlabel("long")
-    plt.ylabel("lat")
+    plt.xlabel("longitude")
+    plt.ylabel("latitude")
     plt.title("Filtered Map")
-    plt.scatter(charger_filtered_lat, charger_filtered_long, label="Charger", color="red", marker="*", s=5)
-    plt.plot(route_lat, route_long, label="Car Route", color="blue")
+    plt.scatter(charger_filtered_long, charger_filtered_lat, label="Charger", color="red", marker="*", s=5)
+    plt.plot(route_long, route_lat, label="Car Route", color="blue")
     plt.legend()
     interactive(False)
     plt.show()
