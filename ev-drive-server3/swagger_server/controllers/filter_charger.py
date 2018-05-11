@@ -1,6 +1,3 @@
-import six
-from swagger_server.controllers import status_controller
-
 import matplotlib.pyplot as plt
 from matplotlib import interactive
 import requests
@@ -28,7 +25,7 @@ def get_route(start, end):
     # Form a list of Point instances.
     new_coordinate_list = []
     for coordinate in coordinate_list:
-        point = {"lat": float(coordinate.split(",")[0]), "long": float(coordinate.split(",")[1])}
+        point = {"lat": float(coordinate.split(",")[1]), "long": float(coordinate.split(",")[0])}
         new_coordinate_list.append(point)
 
     return new_coordinate_list
@@ -51,10 +48,10 @@ def get_coordinates(postcode):
 
     if website_result['status'] != 200:
         return []
-    lat = website_result['result']['latitude']
-    long = website_result['result']['longitude']
+    latitude = website_result['result']['latitude']
+    longitude = website_result['result']['longitude']
 
-    return {"lat": lat, "long": long}
+    return {"lat": latitude, "long": longitude}
 
 
 
@@ -106,7 +103,7 @@ def filter_charger(input_route, charger_list):
     final_charger = []
     for charger in charger_in_range:
         for route_point in input_route:
-            if abs(route_point["long"] - charger["long"]) < 0.03 and abs(route_point["lat"] - charger["lat"]) < 0.03:
+            if abs(route_point["long"] - float(charger["long"])) < 0.03 and abs(route_point["lat"] - float(charger["lat"])) < 0.03:
                 final_charger.append(charger)
                 break
 
@@ -123,13 +120,13 @@ def plot_maps(route, charger_raw_list, charger_filtered_list):
     charger_raw_long = []
     charger_raw_lat = []
     for i in charger_raw_list:
-        charger_raw_long.append(i["long"])
-        charger_raw_lat.append(i["lat"])
+        charger_raw_long.append(float(i["long"]))
+        charger_raw_lat.append(float(i["lat"]))
 
     # Build the figure with route and original charger.
     plt.figure(1)
-    plt.xlabel("lat")
-    plt.ylabel("long")
+    plt.xlabel("longitude")
+    plt.ylabel("latitude")
     plt.title("The Map")
     plt.scatter(charger_raw_long, charger_raw_lat, label="Charger", color="red", marker="*", s=5)
     plt.plot(route_long, route_lat, label="Car Route", color="blue")
@@ -140,13 +137,13 @@ def plot_maps(route, charger_raw_list, charger_filtered_list):
     charger_filtered_long = []
     charger_filtered_lat = []
     for i in charger_filtered_list:
-        charger_filtered_long.append(i["long"])
-        charger_filtered_lat.append(i["lat"])
+        charger_filtered_long.append(float(i["long"]))
+        charger_filtered_lat.append(float(i["lat"]))
 
     # Build the figure with route and filtered charger.
     plt.figure(2)
-    plt.xlabel("long")
-    plt.ylabel("lat")
+    plt.xlabel("longitude")
+    plt.ylabel("latitude")
     plt.title("Filtered Map")
     plt.scatter(charger_filtered_long, charger_filtered_lat, label="Charger", color="red", marker="*", s=5)
     plt.plot(route_long, route_lat, label="Car Route", color="blue")
@@ -186,4 +183,4 @@ def get_chargers_on_route(start_postcode, end_postcode, plot=False):
 
 
 if __name__ == "__main__":
-    get_chargers_on_route("EN2 6SB", "SW7 2AZ", plot=True)
+    get_chargers_on_route("SW7 2AZ", "EH2 2PF", plot=True)
