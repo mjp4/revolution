@@ -45,11 +45,15 @@ def filter_charger(input_route, charger_list):
 	return final_charger
 
 
-def test():
-	start_point = random_points.Point(32, 32)
-	end_point = random_points.Point(35, 35)
-	charger = random_points.generate_random_points(30, 40, 30, 40, 10000)
-	route = maps_integration.getRoute([51.652169, -0.084417], [55.950398, -3.180827])
+def plot_maps():
+	"""
+	Define the start_point and the end_point, randomly generate charging points.
+	Plot the raw map and filter map.
+	"""
+	start_point = random_points.Point(51.652169, -0.084417)
+	end_point = random_points.Point(55.950398, -3.180827)
+	charger = random_points.generate_random_points(-4, 0, 50, 57, 10000)
+	route = maps_integration.get_route(start_point, end_point)
 	charger_list_final = filter_charger(route, charger)
 
 	route_long = []
@@ -66,8 +70,8 @@ def test():
 
 	# Build the figure with route and original charger.
 	plt.figure(1)
-	plt.xlabel("Longitude")
-	plt.ylabel("Latitude")
+	plt.xlabel("Latitude")
+	plt.ylabel("Longitude")
 	plt.title("The Map")
 	plt.scatter(charger_long, charger_lat, label="Charger", color="red", marker="*", s=5)
 	plt.plot(route_long, route_lat, label="Car Route", color="blue")
@@ -93,4 +97,4 @@ def test():
 	plt.show()
 
 
-test()
+plot_maps()
