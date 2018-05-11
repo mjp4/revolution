@@ -3,7 +3,7 @@ FROM python:2-alpine
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-RUN apk update && apk add gcc musl-dev python3-dev libffi-dev openssl-dev freetype-dev libpng-dev
+RUN apk update && apk add gcc musl-dev python3-dev libffi-dev openssl-dev
 
 COPY requirements.txt /usr/src/app/
 
