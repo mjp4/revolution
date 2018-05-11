@@ -1,5 +1,6 @@
 import connexion
 import six
+from swagger_server.controllers import status_controller
 
 from swagger_server.models.all_info import AllInfo  # noqa: E501
 from swagger_server import util
@@ -10,7 +11,7 @@ def all_info(username, password, to):  # noqa: E501
 
      # noqa: E501
 
-    :param username: Username for logging in 
+    :param username: Username for logging in
     :type username: str
     :param password: Users password
     :type password: str
@@ -19,4 +20,8 @@ def all_info(username, password, to):  # noqa: E501
 
     :rtype: AllInfo
     """
-    return 'do some magic!'
+
+    a = status_controller.get_charge_perc(username, password)
+
+
+    return a
