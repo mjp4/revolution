@@ -45,18 +45,17 @@ def all_info(username, password, to):  # noqa: E501
 
     # Remove duplicates
     parsed_chargers = []
-    ii = 1
-    for i in limited_chargers:
-        ast.literal_eval(str(i))
+    print(sorted_chargers)
+    for i in sorted_chargers:
         if parsed_chargers:
-            if i["lat"] != parsed_chargers[:-1]["lat"] or i["long"] != parsed_chargers[:-1]["long"]:
+            if i["lat"] != parsed_chargers[-1]["lat"] or i["long"] != parsed_chargers[-1]["long"]:
                 parsed_chargers.append(i)
         else:
             parsed_chargers.append(i)
 
     limited_chargers = parsed_chargers[:3]
 
-    return {"chargers": parsed_chargers,
+    return {"chargers": limited_chargers,
             "car": car_status}
 
 def chargers_with_distance(start_point, chargers):
