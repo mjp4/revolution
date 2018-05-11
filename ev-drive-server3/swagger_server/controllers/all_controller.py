@@ -1,4 +1,5 @@
 import six
+from swagger_server.controllers import status_controller
 
 import matplotlib.pyplot as plt
 from matplotlib import interactive
@@ -124,6 +125,12 @@ def plot_maps(route, charger_raw_list, charger_filtered_list):
     for i in charger_raw_list:
         charger_raw_long.append(i["long"])
         charger_raw_lat.append(i["lat"])
+    # :param username: Username for logging in
+    # :type username: str
+    # :param password: Users password
+    # :type password: str
+    # :param to: Start or end point
+    # :type to: str
 
     # Build the figure with route and original charger.
     plt.figure(1)
@@ -171,3 +178,8 @@ def get_chargers_on_route(start_postcode, end_postcode, plot=False):
 
 if __name__ == "__main__":
     get_chargers_on_route("EN2 6SB", "SW7 2AZ", plot=True)
+
+    # a = status_controller.get_charge_perc(username, password)
+
+
+    # return a
