@@ -152,16 +152,14 @@ def filter_charger(input_route, charger_list):
 #     interactive(False)
 #     plt.show()
 
-def get_chargers_lat_long(start_lat, start_long, end_postcode, plot=False):
+def filter_chargers_on_route_lat_long(start_point, end_point, chargers):
     """
     Get chargers with start location as lat long, end as postcode
     """
-    start_point = {"lat": start_lat, "long": start_long}
-    end_point = get_coordinates(end_postcode)
     route = get_route(start_point, end_point)
 
     charger_raw_list = get_charger_list()
-    charger_filtered_list = filter_charger(route, charger_raw_list)
+    charger_filtered_list = filter_charger(route, chargers)
 
     return charger_filtered_list
 
