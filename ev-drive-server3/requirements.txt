@@ -4,3 +4,4 @@ typing == 3.5.2.2
 setuptools >= 21.0.0
 wget == 3.2
 pycrypto == 2.6
+matplotlib
