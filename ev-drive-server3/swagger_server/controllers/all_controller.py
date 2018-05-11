@@ -1,11 +1,7 @@
 import connexion
 import six
-<<<<<<< HEAD
 import logging
-=======
 from swagger_server.controllers import status_controller
-
->>>>>>> dab4dcde8d0620d05099db1092c13925535de7ef
 from swagger_server.models.all_info import AllInfo  # noqa: E501
 from swagger_server import util
 import status_controller
