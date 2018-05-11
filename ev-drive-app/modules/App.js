@@ -5,6 +5,7 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import Transition from 'react-motion-ui-pack'
 import { spring } from 'react-motion'
 import axios from 'axios'
+import Revolution from 'revolution'
 
 
 // Top-level App Component that holds router links and holds relevant route view.
@@ -19,7 +20,7 @@ export default React.createClass({
             { lat: 4, long: 2 },
             { lat: 5, long: 1 }]
             ;
-        return {state:0,secondsElapsed:0};
+        return { state: 0, secondsElapsed: 0, api: new Revolution.AllApi(), username: "mark@perryman.org.uk", password: "password", to:"Edinburgh"};
     },
     nextState: function(){
         this.state.state++;
@@ -41,19 +42,19 @@ export default React.createClass({
                 });
         };
     },
+    callback: function (error,data,response) {
+        if (error) {
+            console.error(error);
+        } else {
+            console.log('API called successfully. Returned data: ' + data);
+        }
+    },
     componentDidMount: function () {
         this.interval = setInterval(this.tick, 1000);
     },
     getChargers: function() {
-        axios.get('/chargers', {
-            param: 'mock'
-        })
-           .then(function (response) {
-               this.chargers=response;
-           })
-           .catch(function (error) {
-               console.log(error);
-           });
+        this.api.allInfo(this.state.username, this.state.password, this.callback(error, data, response));
+        return this.callback.data;
     },
 
 
@@ -99,14 +100,14 @@ export default React.createClass({
     
         Button : function(){
             return ( <div>
-                <h3 style={{ textAlign: 'center' }}>{this.state.secondsElapsed}</h3>
+                <h3 style={{ textAlign: 'center' }}>{this.password}{this.state.secondsElapsed}</h3>
                 <form style={{ textAlign: 'center' }}>
                     <label>
                         Destination: 
-                   <input type="text" name="destination" />
+                   <input type="text" value={this.state.to} />
                     </label>
                 </form>
-        <button className="btn btn-success"  onClick={this.nextState.bind()} style={{margin:'auto', display:'block', marginTop:'5%'}}>GO</button>
+                <button className="btn btn-success" onClick={() => { this.nextState.bind(); this.getChargers() }} style={{margin:'auto', display:'block', marginTop:'5%'}}>GO</button>
 
         </div>  ) 
         },

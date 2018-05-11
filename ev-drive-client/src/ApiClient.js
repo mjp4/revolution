@@ -49,7 +49,7 @@
      * @type {String}
      * @default http://localhost/revolution/api
      */
-    this.basePath = 'http://localhost/revolution/api'.replace(/\/+$/, '');
+    this.basePath = 'http://pc5095:7180/revolution/api'.replace(/\/+$/, '');
 
     /**
      * The authentication methods to be included for all API calls.
