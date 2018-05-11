@@ -27,7 +27,7 @@ def all_info(username, password, to):  # noqa: E501
 
     username = "mark@perryman.org.uk"
 
-    car_status = { "Watt ": "18160",
+    car_status = { "WattHour": "18160",
                    "location_lat": "52.375666666667",
                    "location_long": "-1.7978888888889"
                    }
@@ -40,7 +40,6 @@ def all_info(username, password, to):  # noqa: E501
 
 
     for i in all_chargers:
-        print(str(i))
         ast.literal_eval(str(i))
         charge_lat = i["lat"]
         charge_long = i["long"]
