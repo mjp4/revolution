@@ -20,6 +20,34 @@ consumes:
 produces:
 - "application/json"
 paths:
+  /all_info/{username}/{password}/{to}:
+    get:
+      tags:
+      - "all"
+      summary: "Get all the info"
+      operationId: "all_info"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "Username for logging in\n"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "path"
+        description: "Users password"
+        required: true
+        type: "string"
+      - name: "to"
+        in: "path"
+        description: "Start or end point"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Success. We have found the info."
+          schema:
+            $ref: "#/definitions/allInfo"
+      x-swagger-router-controller: "swagger_server.controllers.all_controller"
   /charge_perc/nissan/{username}/{password}:
     get:
       tags:
@@ -163,6 +191,56 @@ definitions:
       other:
         type: "string"
         description: "Other possible details."
+    example:
+      other: "other"
+      dist_miles: "dist_miles"
+      dist_km: "dist_km"
+      lat: "lat"
+      long: "long"
+      network: "network"
+      extra_time: "extra_time"
+  allInfo:
+    type: "object"
+    properties:
+      car:
+        $ref: "#/definitions/allInfo_car"
+      chargers:
+        type: "array"
+        items:
+          $ref: "#/definitions/charger"
+    example:
+      car:
+        charge: "charge"
+        lat: "lat"
+        long: "long"
+      chargers:
+      - other: "other"
+        dist_miles: "dist_miles"
+        dist_km: "dist_km"
+        lat: "lat"
+        long: "long"
+        network: "network"
+        extra_time: "extra_time"
+      - other: "other"
+        dist_miles: "dist_miles"
+        dist_km: "dist_km"
+        lat: "lat"
+        long: "long"
+        network: "network"
+        extra_time: "extra_time"
+  allInfo_car:
+    properties:
+      lat:
+        type: "string"
+      long:
+        type: "string"
+      charge:
+        type: "string"
+        description: "The charge in watt hour"
+    example:
+      charge: "charge"
+      lat: "lat"
+      long: "long"
 parameters:
   username:
     name: "username"

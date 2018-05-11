@@ -1,5 +1,6 @@
 import connexion
 import six
+import json
 
 from swagger_server.models.on_route import OnRoute  # noqa: E501
 from swagger_server import util
@@ -17,7 +18,12 @@ def chargers_on_route(_from, to):  # noqa: E501
 
     :rtype: OnRoute
     """
-    return [
+    with open("charger-list/50over.json", "r") as charger_file:
+        all_chargers = json.load(charger_file)
+
+    return all_chargers
+"""
+[
   {
     "lat": "52.618731",
     "long": "-1.205812",
@@ -37,9 +43,8 @@ def chargers_on_route(_from, to):  # noqa: E501
     "other": "extra_string"
   }
 ]
-
+"""
 
 def getCoordinates(name):
   places = [[51.652135, -0.084229],[51.513806, -0.100695],[55.947426, -3.196410]]
   return sample(places,1)[0]
-
