@@ -3,7 +3,7 @@ import six
 
 from swagger_server.models.on_route import OnRoute  # noqa: E501
 from swagger_server import util
-
+from random import sample
 
 def chargers_on_route(_from, to):  # noqa: E501
     """Get a list of the chargers on route
@@ -37,3 +37,9 @@ def chargers_on_route(_from, to):  # noqa: E501
     "other": "extra_string"
   }
 ]
+
+
+def getCoordinates(name):
+  places = [[51.652135, -0.084229],[51.513806, -0.100695],[55.947426, -3.196410]]
+  return sample(places,1)[0]
+
