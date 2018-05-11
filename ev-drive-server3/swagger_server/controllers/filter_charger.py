@@ -10,35 +10,35 @@ import json
 def get_route(start, end):
     """
     This function gets the route information from a mysterious website.
-    
+
     Inputs the start and end coordinates.
-    Returns a list of Point instances represents the route found by the website.  
+    Returns a list of Point instances represents the route found by the website.
     """
 
     # Get the route data from website.
     base_url = "http://www.yournavigation.org/api/1.0/gosmore.php?format=kml&flat={0}&flon={1}&tlat={2}&tlon={3}&v=motorcar&fast=1&layer=mapnik"
     get_url = base_url.format(start["lat"], start["long"], end["lat"], end["long"])
     website_text_result = requests.get(get_url).text
-    
+
     # Filter the output to get the coordinates.
     website_text_result = website_text_result.split("<coordinates> ")[1]
     website_text_result = website_text_result.split("</coordinates>")[0]
     coordinate_list = website_text_result.split("\n")[:-1]
-    
+
     # Form a list of Point instances.
     new_coordinate_list = []
     for coordinate in coordinate_list:
         point = {"lat": float(coordinate.split(",")[0]), "long": float(coordinate.split(",")[1])}
         new_coordinate_list.append(point)
-    
+
     return new_coordinate_list
 
 
 def get_coordinates(postcode):
     """
     This function returns the lat and long for a given postcode.
-    
-    Input the postcode as a string. You can have space between. 
+
+    Input the postcode as a string. You can have space between.
     Returns a Point instance with lat and long.
     """
 
@@ -53,7 +53,7 @@ def get_coordinates(postcode):
         return []
     lat = website_result['result']['latitude']
     long = website_result['result']['longitude']
-   
+
     return {"lat": lat, "long": long}
 
 
@@ -76,18 +76,18 @@ def filter_charger(input_route, charger_list):
     """
     input_route is a list of points, every one of them contains two numbers, long and lat.
     charger_list is a list of random points on the map, also contain long and lat.
-    
+
     The aim is to get a list of chargers along the path within 0.03 miles.
     """
 
     long_list = []
     lat_list = []
-    
-    # Loop through the route, group all long and lat into two lists. 
+
+    # Loop through the route, group all long and lat into two lists.
     for route_point in input_route:
         long_list.append(route_point["long"])
         lat_list.append(route_point["lat"])
-    
+
     long_min = min(long_list) - 0.03
     long_max = max(long_list) + 0.03
     lat_min = min(lat_list) - 0.03
@@ -102,7 +102,7 @@ def filter_charger(input_route, charger_list):
                 charger_in_range.append(charger)
 
     # Do calculations to filter more.
-    # Keep chargers within 2 miles distance from the route, which is 0.03 degree either long or lat. 
+    # Keep chargers within 2 miles distance from the route, which is 0.03 degree either long or lat.
     final_charger = []
     for charger in charger_in_range:
         for route_point in input_route:
@@ -153,6 +153,19 @@ def plot_maps(route, charger_raw_list, charger_filtered_list):
     plt.legend()
     interactive(False)
     plt.show()
+
+def get_chargers_lat_long(start_lat, start_long, end_postcode, plot=False):
+    """
+    Get chargers with start location as lat long, end as postcode
+    """
+    start_point = {"lat": start_lat, "long": start_long}
+    end_point = get_coordinates(end_postcode)
+    route = get_route(start_point, end_point)
+
+    charger_raw_list = get_charger_list()
+    charger_filtered_list = filter_charger(route, charger_raw_list)
+
+    return charger_filtered_list
 
 
 def get_chargers_on_route(start_postcode, end_postcode, plot=False):

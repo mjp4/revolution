@@ -4,6 +4,7 @@ from swagger_server.controllers import status_controller
 import json
 
 from swagger_server.models.all_info import AllInfo  # noqa: E501
+from swagger_server.controllers import filter_charger
 from swagger_server import util
 
 
@@ -20,8 +21,13 @@ def all_info(username, password, to):  # noqa: E501
     """
     car_status = status_controller.get_charge_perc(username, password)
 
-    with open("swagger_server/controllers/charger-list/50over.json", "r") as charger_file:
-        all_chargers = json.load(charger_file)
+    start_lat = car_status['location_lat']
+    start_long = car_status['location_long']
+
+    all_chargers = filter_charger.get_chargers_lat_long(start_lat, start_long, to)
+
+
+
 
     return {"chargers": all_chargers,
             "car": car_status}
