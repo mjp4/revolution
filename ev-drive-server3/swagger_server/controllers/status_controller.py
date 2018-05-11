@@ -41,13 +41,13 @@ def get_charge_perc(username, password):  # noqa: E501
     l = login(username, password)
 
     leaf_info = l.get_latest_battery_status()
+    (lng, lat) = get_location(l)
 
-    return [
-        {
-        "percentage": leaf_info.state_of_charge,
-        "kwh": 1
+    return {
+        "Watt Hours": leaf_info.answer["BatteryStatusRecords"]["BatteryStatus"]["BatteryRemainingAmountWH"],
+        "location_lat": lat,
+        "location_long": lng
         }
-    ]
 
 
 def login(username, password):
@@ -119,7 +119,6 @@ class Session(object):
             log.warning('HTTP Request failed')
 
         j = json.loads(response.content.decode('utf-8'))
-        print(j)
 
         if "message" in j and j["message"] == "INVALID PARAMS":
             log.error("carwings error %s: %s" % (j["message"], j["status"]) )
@@ -295,6 +294,7 @@ class CarwingsLatestBatteryStatusResponse(CarwingsResponse):
         bs = recs["BatteryStatus"]
         self.battery_capacity = bs["BatteryCapacity"]
         self.battery_remaining_amount = bs["BatteryRemainingAmount"]
+        self.battery_remaining_amout_wh = bs['BatteryRemainingAmountWH']
         self.charging_status = bs["BatteryChargingStatus"]
         self.is_charging = ("NOT_CHARGING" != bs["BatteryChargingStatus"]) # double negatives are fun
         self.is_quick_charging = ("RAPIDLY_CHARGING" == bs["BatteryChargingStatus"])

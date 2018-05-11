@@ -1,14 +1,6 @@
 import random as random
 import math as math
 
-class Point():
-   def __init__(self, latitude, longitude):
-       self.latitude = latitude
-       self.longitude = longitude
-   def __str__(self):
-   	   return "({0}, {1})".format(self.latitude, self.longitude)
-
-
 def generate_random_points(lowerLatitude, upperLatitude, lowerLongitude, upperLongitude, numberOfPoints):
 
    listOfPoints = []
@@ -19,7 +11,7 @@ def generate_random_points(lowerLatitude, upperLatitude, lowerLongitude, upperLo
 
        latitude = lowerLatitude + (upperLatitude - lowerLatitude) * random.random()
        longitude = lowerLongitude + (upperLongitude - lowerLongitude) * random.random()
-       point = Point(latitude, longitude)
+       point = {"latitude": latitude, "longitude": longitude}
        listOfPoints.append(point)
        i = i + 1
 
@@ -32,25 +24,25 @@ def generate_random_trajectory(start, end, numberOfPoints):
    
    if distance < 0.01:
        return []
-   unitVector = [(end.latitude - start.latitude) / distance, (end.longitude - start.longitude) / distance]
+   unitVector = [(end["latitude"] - start["latitude"]) / distance, (end["longitude"] - start["longitude"]) / distance]
 
-   trayectory = []
-   trayectory.append(start)
+   trajectory = []
+   trajectory.append(start)
    step = distance / numberOfPoints
 
    i = 0
    while (i < numberOfPoints):
        point = Point(0, 0)
-       point.latitude = trayectory[-1].latitude + step * unitVector[0]
-       point.longitude = trayectory[-1].longitude + step * unitVector[1]
+       point["latitude"] = trajectory[-1]["latitude"] + step * unitVector[0]
+       point["longitude"] = trajectory[-1]["longitude"] + step * unitVector[1]
 
-       trayectory.append(point)
+       trajectory.append(point)
        i = i + 1
 
    
-   return trayectory
+   return trajectory
 
 
 def distance_between_points(a, b):
 
-   return math.sqrt(math.pow(b.latitude - a.latitude, 2) + math.pow(b.longitude - a.longitude, 2))
+   return math.sqrt(math.pow(b["latitude"] - a["latitude"], 2) + math.pow(b["longitude"] - a["longitude"], 2))
