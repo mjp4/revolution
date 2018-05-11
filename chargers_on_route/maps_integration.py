@@ -29,16 +29,19 @@ def get_route(start, end):
     
     return new_coordinate_list
 
-def get_coordinates(name):
+
+def get_coordinates(postcode):
     """
-    This function returns the latitude and longitude for a given postcode
+    This function returns the latitude and longitude for a given postcode.
     
-    Input the postcode, as a string
-    Returns a list with two elements, latitude and longitude
+    Input the postcode as a string. You can have space between. 
+    Returns a Point instance with latitude and longitude.
     """
 
+    # Remove the space between postcode.
+    postcode = postcode.replace(" ", "")
     base_url = "http://api.postcodes.io/postcodes/{0}"
-    get_url = base_url.format(name)
+    get_url = base_url.format(postcode)
     website_text_result = requests.get(get_url).text
     website_result = json.loads(website_text_result)
 
@@ -47,4 +50,9 @@ def get_coordinates(name):
     latitude = website_result['result']['latitude']
     longitude = website_result['result']['longitude']
    
-    return [latitude,longitude]
+    return Point(latitude,longitude)
+
+
+if __name__ == "__main__":
+    coordinate = get_coordinates("EN2 6SB")
+    print(coordinate)
