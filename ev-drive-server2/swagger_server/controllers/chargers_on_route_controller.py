@@ -26,7 +26,7 @@ def chargers_on_route(_from, to):  # noqa: E501
     "dist_km": "80",
     "extra_time": "5",
     "other": "extra_string"
-  }
+  },
   {
     "lat": "53.713912",
     "long": "-1.743583",

@@ -26,11 +26,11 @@ BASE_URL = "https://gdcportalgw.its-mo.com/gworchest_160803A/gdc/"
 
 log = logging.getLogger(__name__)
 
-def get_charge_perc(username="mark@perryman.org.uk", password="toby"):  # noqa: E501
+def get_charge_perc(username, password):  # noqa: E501
     """Get the charge percentage
 
      noqa: E501
-d
+
     :param username: Username for logging in
     :type username: str
     :param password: Users password
@@ -38,27 +38,24 @@ d
 
     :rtype: ChargePerc
     """
-
-    # username = "mark@perryman.org.uk"
-
-    print(username)
-    print(password)
-    print("Executing run.py")
-
-    print ("Prepare Session")
-    s = Session(username, password , "NE")
-
-    print("Login...")
-    l = s.get_leaf()
-
-
-    logging.debug("login = %s , password = %s" % ( username , password)  )
-
+    l = login(username, password)
 
     leaf_info = l.get_latest_battery_status()
 
-    return leaf_info.state_of_charge
+    return [
+        {
+        "percentage": leaf_info.state_of_charge,
+        "kwh": 1
+        }
+    ]
 
+
+def login(username, password):
+    s = Session(username, password , "NE")
+    # print("Login...")
+    l = s.get_leaf()
+    logging.debug("login = %s , password = %s" % ( username , password)  )
+    return l
 
 def get_location(l):
     result_key = l.request_location()
