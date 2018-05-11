@@ -44,8 +44,7 @@ def get_charge_perc(username, password):  # noqa: E501
 
     return [
         {
-        "percentage": leaf_info.state_of_charge,
-        "kwh": 1
+        "Watt Hours": leaf_info.answer["BatteryStatusRecords"]["BatteryStatus"]["BatteryRemainingAmountWH"]
         }
     ]
 
@@ -119,7 +118,6 @@ class Session(object):
             log.warning('HTTP Request failed')
 
         j = json.loads(response.content.decode('utf-8'))
-        print(j)
 
         if "message" in j and j["message"] == "INVALID PARAMS":
             log.error("carwings error %s: %s" % (j["message"], j["status"]) )
