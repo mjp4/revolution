@@ -118,13 +118,15 @@ export default React.createClass({
     },
 
     List: function () {
-        return (<div style={{ textAlign: 'center' }}>
+        return (<div style={{ textAlign: 'center' , contentAlign:'center'}}>
             <h3 >List placeholder</h3>
-            <ul>
                 {this.chargers.map(function (listValue) {
-                    return <li>{listValue.lat} x {listValue.long}</li>;
+                return (<div className="container" style={{
+                    backgroundColor: listValue.lat > 3 ? 'pink' : 'lightgreen', borderRadius: '5px', padding:'5px', marginTop:'5px', width: '600px' }}>
+                    <div style={{ width: '65%', padding: '5px' , float:'left' , textAlign:'left'}}><div style={{ padding: '5px' }}>Charger: {listValue.lat}</div><div style={{ padding: '5px' }}>Network: {listValue.long}</div></div>
+                    <div style={{padding: '5px' }}><div>Distance: {listValue.lat}</div><div>Extra Time: {listValue.long}</div></div>
+                        </div>);
                 })}
-            </ul>
             </div>
             )
     },
