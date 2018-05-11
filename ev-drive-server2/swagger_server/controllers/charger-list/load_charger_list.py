@@ -13,3 +13,5 @@ def get_charger_list():
 
     return charger_list
 
+
+get_charger_list()
