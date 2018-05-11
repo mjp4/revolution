@@ -62,7 +62,7 @@ def get_charger_list():
     Returns a list of dictionaries with the charger content on them
     """
 
-    charger_file = open('charger-list/50over.json','r')
+    charger_file = open('swagger_server/controllers/charger-list/50over.json','r')
     content = charger_file.read()
     charger_list = json.loads(content)
 
