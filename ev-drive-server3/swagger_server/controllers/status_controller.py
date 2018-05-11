@@ -44,7 +44,7 @@ def get_charge_perc(username, password):  # noqa: E501
     (lng, lat) = get_location(l)
 
     return {
-        "Watt Hours": leaf_info.answer["BatteryStatusRecords"]["BatteryStatus"]["BatteryRemainingAmountWH"],
+        "charge": leaf_info.answer["BatteryStatusRecords"]["BatteryStatus"]["BatteryRemainingAmountWH"],
         "location_lat": lat,
         "location_long": lng
         }
