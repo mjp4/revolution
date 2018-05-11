@@ -31,11 +31,8 @@ def get_dist_to_charger(lat_here, long_here, lat_there, long_there):  # noqa: E5
     url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins={},{}&destinations={},{}&key={}" \
         .format(lat_here, long_here, lat_there, long_there, api_key)
 
-    fs = wget.download(url=url, out='dist.json')
-    with open(fs, 'r') as f:
-        content = f.read()
-
-    data = json.loads(content)
+    website_text_result = requests.get(url).text
+    data = json.loads(website_text_result)
 
     miles = data['rows'][0]['elements'][0]['distance']['text']
 
@@ -52,3 +49,13 @@ def get_dist_to_charger(lat_here, long_here, lat_there, long_there):  # noqa: E5
     #     * cos(lat_there * p) \
     #     * (1 - cos((long_there - long_here) * p)) / 2
     # return 12742 * asin(sqrt(a))
+
+def extra_time_to_charger(lat_here, long_here, lat_there, long_there):
+
+
+
+    return "10 minutes"
+
+
+
+
